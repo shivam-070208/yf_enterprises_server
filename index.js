@@ -11,9 +11,12 @@ app.use(cors({
     methods: ['GET', 'POST'],
 }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
-  const transporter = nodemailer.createTransport({
+
+
+const transporter = nodemailer.createTransport({
       service: 'gmail',
       secure: true,
       auth: {
@@ -28,6 +31,8 @@ app.post('/', async (req, res) => {
   if (!data || typeof data !== 'object') {
     return res.status(400).json({ success: false, message: 'Invalid data.' });
   }
+
+
 
   // 1. Build full HTML document
   const htmlContent = `
@@ -72,6 +77,11 @@ app.post('/', async (req, res) => {
   
 });
 
+
+app.get('/', (req, res) => {
+  res.send('Welcome to the YF Enterprises Server!');
+}
+);
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server running on port ${process.env.PORT || 3000}`);
 });
