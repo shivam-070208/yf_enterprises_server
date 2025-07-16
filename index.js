@@ -7,8 +7,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const app = express();
 app.use(cors({
-    origin:process.env.ALLOWED_ORIGIN , // Replace with your allowed origin or use '*' for all
-    methods: ['GET', 'POST'],
+    origin:process.env.ALLOWED_ORIGIN 
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
