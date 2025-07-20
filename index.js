@@ -58,7 +58,8 @@ app.post('/', async (req, res) => {
 </html>`;
 
  
-
+    console.log(process.env.RECEIVER_EMAIL,);
+    
     const mailOptions = {
       from: process.env.GMAIL_USER,
       to: process.env.RECEIVER_EMAIL,
