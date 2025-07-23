@@ -26,9 +26,9 @@ const transporter = nodemailer.createTransport({
     });
 
 app.post('/', upload.single('pdf'),async (req, res) => {
-  console.log('hello')
   let { data } = req.body;
-  data = JSON.parse(data);
+
+ if(typeof data !=='object') data = JSON.parse(data);
     const {topic} = req.query;
 
 
