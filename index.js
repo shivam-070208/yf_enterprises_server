@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
+const upload = require('./config/multer');
 
 
 dotenv.config();
@@ -24,12 +25,12 @@ const transporter = nodemailer.createTransport({
       }
     });
 
-app.post('/', async (req, res) => {
-  const { data } = req.body;
+app.post('/', upload.single('pdf'),async (req, res) => {
+  console.log('hello')
+  let { data } = req.body;
+  data = JSON.parse(data);
     const {topic} = req.query;
-  if (!data || typeof data !== 'object') {
-    return res.status(400).json({ success: false, message: 'Invalid data.' });
-  }
+
 
 
 
@@ -60,13 +61,20 @@ app.post('/', async (req, res) => {
  
    
     
-    const mailOptions = {
-      from: process.env.GMAIL_USER,
-      to: process.env.RECEIVER_EMAIL,
-      subject: `${topic} from ${data.name || 'Someone'}`,
-      html: htmlContent
-    };
-
+ const mailOptions = {
+  from: process.env.GMAIL_USER,
+  to: process.env.RECEIVER_EMAIL,
+  subject: `${topic} from ${data.name || 'Someone'}`,
+  html: htmlContent,
+  attachments: req.file
+    ? [
+        {
+          filename: `${data.name}_${Date.now()}.${req.file.originalname.split('.').pop()}`,
+          content: req.file.buffer,
+        },
+      ]
+    : [],
+};
     try {
       await transporter.sendMail(mailOptions);
       res.status(200).json({ success: true, message: 'Email sent successfully with PDF.' });
