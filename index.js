@@ -89,11 +89,12 @@ app.post("/", upload.single("pdf"), async (req, res) => {
     // Here, we're assuming the "UserModel" schema has a "fileData" field to store the file buffer
     await UserModel.create({
       data, 
-      attachment: {
+
+      attachment: req.file?{
         filename: fileName,
         data: req.file.buffer,  // Store the file buffer directly in MongoDB
         contentType: req.file.mimetype,
-      },
+      }:{},
       topic,
     });
 
