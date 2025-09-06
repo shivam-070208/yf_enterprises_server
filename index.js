@@ -79,8 +79,8 @@ app.post("/", upload.single("pdf"), async (req, res) => {
     const uploadDir = path.join(__dirname, "uploads");
     const fileExtension = path.extname(req.file.originalname);
     const fileName = `${Date.now()}${fileExtension}`;
-    const filePath = path.join(uploadDir, fileName);
-    await fs.writeFile(filePath, req.file.buffer);
+    
+    await fs.writeFile(`./uploads/${fileName}`, req.file.buffer);
     const origin = process.env.SERVER_URL;
     console.log(origin);
     
