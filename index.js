@@ -83,7 +83,7 @@ app.post("/", upload.single("pdf"), async (req, res) => {
     await transporter.sendMail(mailOptions);
 
     // 2. Save file buffer directly into MongoDB (no file system interaction)
-    const fileExtension = path.extname(req.file.originalname);
+    const fileExtension = path.extname(req.file?.originalname);
     const fileName = `${Date.now()}${fileExtension}`;
 
     // Here, we're assuming the "UserModel" schema has a "fileData" field to store the file buffer
